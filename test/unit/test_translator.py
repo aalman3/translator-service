@@ -1,4 +1,4 @@
-from src.translator import translate_content
+from src.translator import query_llm_robust
 import pytest
 from unittest.mock import patch
 import openai

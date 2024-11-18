@@ -69,7 +69,7 @@ def get_language(post: str) -> str:
             print("Error in language detection:", e)
             return ""
 
-def query_llm_robust(post: str) -> tuple[bool, str]:
+def translate_content(post: str) -> tuple[bool, str]:
     # Attempt to detect the language of the post
     try:
         detected_language = get_language(post)

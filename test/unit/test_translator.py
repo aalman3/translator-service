@@ -56,7 +56,7 @@ def test_rate_limit_error_handling(mock_create):
 
 
 def test_chinese():
-    is_english, translated_content = translate_content("这是一条中文消息")
+    is_english, translated_content = query_llm_robust("这是一条中文消息")
     assert is_english == False
     assert translated_content == "This is a Chinese message"
 

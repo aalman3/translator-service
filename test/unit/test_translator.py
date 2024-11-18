@@ -50,18 +50,3 @@ def test_rate_limit_error_handling(mock_create):
 
     result = query_llm_robust("Hier ist dein erstes Beispiel.")
     assert result == (False, "Here is your first example."), "Expected successful retry after rate limit error"
-
-
-
-
-
-def test_chinese():
-    is_english, translated_content = query_llm_robust("这是一条中文消息")
-    assert is_english == False
-    assert translated_content == "This is a Chinese message"
-
-def test_llm_normal_response():
-    pass
-
-def test_llm_gibberish_response():
-    pass

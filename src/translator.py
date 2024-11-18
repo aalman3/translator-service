@@ -68,27 +68,32 @@ def get_language(post: str) -> str:
             print("Error in language detection:", e)
             return ""
 
-def translate_content(post: str) -> str:
-    """
-    Detects the language of the text and translates it into English if it's not already in English.
-    """
+def query_llm_robust(post: str) -> tuple[bool, str]:
+    # Attempt to detect the language of the post
     try:
-        # Step 1: Detect the language of the text
         detected_language = get_language(post)
-        print(f"Detected Language: {detected_language}")
-
-        # Step 2: Translate if the text is not in English
-        if detected_language != "English":
-            print(f"Translating text from {detected_language} to English...")
-            return get_translation(post)
-        else:
-            print("Text is already in English. No translation needed.")
-            return post
-
+        # Validate the response format
+        if not isinstance(detected_language, str) or detected_language == "":
+            print("Warning: Unexpected format or empty response in language detection. Defaulting to English.")
+            detected_language = "English"
     except Exception as e:
-        print("Error in translate_content:", e)
-        return ""
+        print("Error in language detection:", e)
+        detected_language = "English"  # Default to English if detection fails
 
+    # If the detected language is English, return True with the original post
+    if detected_language.lower() == "english":
+        return (True, post)
 
+    # Attempt to translate the text if it's not in English
+    try:
+        translation = get_translation(post)
+        # Validate the response format
+        if not isinstance(translation, str) or translation == "":
+            print("Warning: Unexpected format or empty response in translation. Defaulting to placeholder message.")
+            translation = "Translation unavailable due to processing error."
+    except Exception as e:
+        print("Error in translation:", e)
+        translation = "Translation unavailable due to processing error."  # Placeholder if translation fails
 
+    return (False, translation)
 
